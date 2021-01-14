@@ -105,33 +105,6 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'contrato',
-#         'HOST': 'localhost',
-#         'USER': 'postgres',
-#         'PASSWORD': '6Vlgpcr/zaira',
-#         'PORT': 5432
-#     }
-# }
-
-import dj_database_url
-from decouple import config
-
-
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
-
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -170,6 +143,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
 
 STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/'
