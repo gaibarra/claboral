@@ -109,15 +109,26 @@ CKEDITOR_CONFIGS = {
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'contrato',
+#         'HOST': 'localhost',
+#         'USER': 'postgres',
+#         'PASSWORD': '6Vlgpcr/zaira',
+#         'PORT': 5432
+#     }
+# }
+
+import dj_database_url
+from decouple import config
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'contrato',
-        'HOST': 'localhost',
-        'USER': 'postgres',
-        'PASSWORD': '6Vlgpcr/zaira',
-        'PORT': 5432
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+
 }
 
 
@@ -214,3 +225,5 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
