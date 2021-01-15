@@ -702,7 +702,8 @@ def coverletter_export(request,id):
     
     kh=ht0.add_run()
     
-    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    #THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    THIS_FOLDER = '/contrato/cto'
     my_file = os.path.join(THIS_FOLDER, 'logo.png')
     
     
