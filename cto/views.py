@@ -702,14 +702,14 @@ def coverletter_export(request,id):
     
     kh=ht0.add_run()
     
-    #THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    THIS_FOLDER = '/contrato/cto'
-    my_file = os.path.join(THIS_FOLDER, 'logo.png')
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    
+    #my_file = os.path.join(THIS_FOLDER, 'logo.png')
     
     
 
 
-    kh.add_picture(my_file, width=Inches(1.00))
+    #kh.add_picture(my_file, width=Inches(1.00))
     ht0.alignment = WD_ALIGN_PARAGRAPH.LEFT
     
     ht1=htab_cells[1].add_paragraph("ESCUELA MODELO, S.C.P.")
