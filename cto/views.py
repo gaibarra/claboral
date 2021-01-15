@@ -652,7 +652,7 @@ def coverletter_export(request,id):
     currency = "${:,.2f}".format(contratos.importeContrato.amount)
     currency2 = "${:,.2f}".format(contratos.imppContrato.amount)
     document = Document()
-    locale.setlocale(locale.LC_TIME, "en-US")
+    #locale.setlocale(locale.LC_TIME, "en-US")
     puesto = Puestos.objects.filter(nombrePuesto=partes.clavePuesto).first()
     
     #footer_para.paragraph_format.page_break_before = True
