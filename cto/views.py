@@ -238,7 +238,7 @@ def contratos2(request,contrato_id=None):
     
     template_name='cto/contrato.html'
     detalle = {}
-    secuencia_data = {}
+    #secuencia_data = {}
     #xUsuario = (request.user.id)
     #print(xUsuario)
     #print (contrato_id)
@@ -262,7 +262,7 @@ def contratos2(request,contrato_id=None):
     
     #d1 = p.claveDepartamento
     
-    rfcparte = (p.rfc)
+    #rfcparte = (p.rfc)
     #print(rfcparte)
     
     #print(dx)
@@ -349,11 +349,15 @@ def contratos2(request,contrato_id=None):
     
     if request.method == "GET":
         enc = Contratos.objects.filter(pk=contrato_id).first()
+        tipocontratox = Tipocontrato.objects.filter(marcatipoContrato = True)
+        tipocontratox = tipocontratox.first()
+        
+        tipocontrato = tipocontratox.id 
         if not enc:
             encabezado = {
                 'id':"",
                 'uc_id':"",
-                'tipocontrato':1,
+                'tipocontrato':tipocontrato,
                 'datecontrato':datetime.today(),
                 'datecontrato_ini':"",
                 'datecontrato_fin':"",
@@ -385,23 +389,19 @@ def contratos2(request,contrato_id=None):
                 'rstep5':r5,
                 'rstep6':r6,
                 
-                
                 'astep1':f1,
                 'astep2':f2,
                 'astep3':f3,
                 'astep4':f4,
                 'astep5':f5,
                 'astep6':f6,
-            
                 'devuelto_por':"",
 
-            
             }
             detalle=None
         else:
             
             encabezado = {
-                
                 'id':enc.id,
                 'uc_id':enc.uc_id,
                 'tipocontrato':enc.tipocontrato,
@@ -436,7 +436,6 @@ def contratos2(request,contrato_id=None):
                 'rstep5':enc.rstep5,
                 'rstep6':enc.rstep6,
                 
-                
                 'astep1':enc.astep1,
                 'astep2':enc.astep2,
                 'astep3':enc.astep3,
@@ -460,15 +459,13 @@ def contratos2(request,contrato_id=None):
             
                 'devuelto_por':enc.devuelto_por,
                 'current_user':enc.current_user,
-                
 
             }
 
        
-        
         detalle=Doctos.objects.filter(contrato=enc)
        
-        contexto = {"requi":requisitos,"fun":funcionario,"fun2":partes2,"fun3":partes3,"enc":encabezado,"det":detalle,"departamentos":departamentos,"funcionarios":partes,"departamentos2":departamentos2,}
+        contexto = {"requi":requisitos,"fun":funcionario,"fun2":partes2,"fun3":partes3,"enc":encabezado,"det":detalle,"departamentos":departamentos,"funcionarios":partes,"departamentos2":departamentos2, "tipocont":tipocontratox, }    
         
         return render(request,template_name,contexto)
     
@@ -652,7 +649,7 @@ def coverletter_export(request,id):
     currency = "${:,.2f}".format(contratos.importeContrato.amount)
     currency2 = "${:,.2f}".format(contratos.imppContrato.amount)
     document = Document()
-    #locale.setlocale(locale.LC_TIME, "en-US")
+    locale.setlocale(locale.LC_TIME, "es-MX")
     puesto = Puestos.objects.filter(nombrePuesto=partes.clavePuesto).first()
     
     #footer_para.paragraph_format.page_break_before = True
@@ -704,12 +701,12 @@ def coverletter_export(request,id):
     
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     
-    #my_file = os.path.join(THIS_FOLDER, 'logo.png')
+    my_file = os.path.join(THIS_FOLDER, 'logo.png')
     
     
 
 
-    #kh.add_picture(my_file, width=Inches(1.00))
+    kh.add_picture(my_file, width=Inches(1.00))
     ht0.alignment = WD_ALIGN_PARAGRAPH.LEFT
     
     ht1=htab_cells[1].add_paragraph("ESCUELA MODELO, S.C.P.")
@@ -887,7 +884,8 @@ def coverletter_export(request,id):
                textosecue = textosecue.replace("@letras" , "(" + letras + ")" )
                
                textosecue = textosecue.replace("@datecontrato_ini" , contratos.datecontrato_ini.strftime("%d de %B de %Y"))
-               textosecue = textosecue.replace("@datecontrato_fin" , contratos.datecontrato_fin.strftime("%d de %B de %Y"))
+               if contratos.datecontrato_fin:
+                  textosecue = textosecue.replace("@datecontrato_fin" , contratos.datecontrato_fin.strftime("%d de %B de %Y"))
                textosecue = textosecue.replace("@datecontratox" , contratos.datecontrato.strftime("%d de %B de %Y"))
                if xcurp == "M":
                    textosecue = textosecue.replace("CATEDRÁTICO UNIVERSITARIO Y ASESOR" , "CATEDRÁTICA UNIVERSITARIA Y ASESORA" )
@@ -985,7 +983,8 @@ def coverletter_export(request,id):
                textosecue = textosecue.replace("@estadocivilParte" , "**********" )
             
             textosecue = textosecue.replace("@datecontrato_ini" , contratos.datecontrato_ini.strftime("%d de %B de %Y"))
-            textosecue = textosecue.replace("@datecontrato_fin" , contratos.datecontrato_fin.strftime("%d de %B de %Y"))
+            if contratos.datecontrato_fin:
+               textosecue = textosecue.replace("@datecontrato_fin" , contratos.datecontrato_fin.strftime("%d de %B de %Y"))
             textosecue = textosecue.replace("@datecontratox" , contratos.datecontrato.strftime("%d de %B de %Y"))
             
             

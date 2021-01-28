@@ -4,7 +4,7 @@
 
 
  {% block top_bar %}
-         
+         <p class="m-0 font-weight-bold text-secundary"> {{ tipocont.tipoContrato }} </p>
          <p class="m-0 font-weight-bold text-secundary">  user-> {{ user.username }} &nbsp;&nbsp; {{ user.last_name }} {{ user.first_name }} {{ secuencia_data }}</p>
       {% for depa in departamentos %}   
          <p class="m-0 font-weight-bold text-">   {{ depa.claveDepartamento }} &nbsp;&nbsp; {{ depa.nombreDepartamento }}  </p> 
@@ -144,7 +144,7 @@
                         </div>
                       {% endif %}
                     </div>
-                    
+                    {% if tipocont.id != 7 and tipocont.id != 10 and tipocont.id != 4 and tipocont.id != 5 %}
                     <div class="row" p-2>    
                       
                         <div class="col-lg-7  text-left">
@@ -161,11 +161,11 @@
                         </div>
                       {% endif %}
                     </div>   
-                        
+                    {% endif %}    
                      <div class="row" p-2>
 
                         <div class="col-lg-6  text-left">
-                               Importe total del contrato:
+                               Importe del contrato:
                                
                         </div>
                       {% if enc.importeContrato %}
