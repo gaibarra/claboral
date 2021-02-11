@@ -143,7 +143,7 @@ class PartesView(SinPrivilegios,generic.ListView):
                     print(xdepa)
                     print(xr1)
                     print(xr2)
-                    return Partes.objects.filter(Q(estado=True), Q(claveDepartamento__gte=xr1),  Q(claveDepartamento__lte=xr2))
+                    return Partes.objects.filter( Q(claveDepartamento__gte=xr1),  Q(claveDepartamento__lte=xr2))
                 # else:
                 #    messages.ERROR (request, '¡Rango de Departamentos no registrado!')
                 #    return HttpResponseRedirect('/admn/')
@@ -230,7 +230,78 @@ class ContratosView(SinPrivilegios, generic.ListView):
         context['some_data'] = Partes.objects.all()
         context['some_data2'] = Departamento.objects.all()
         context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
-        return context                   
+        return context                       
+    
+    def get_context_data(self, **kwargs):
+       
+        # Call the base implementation first to get a context
+        context = super(ContratosView, self).get_context_data(**kwargs)
+        # Get the blog from id and add it to the context
+        context['some_data'] = Partes.objects.all()
+        context['some_data2'] = Departamento.objects.all()
+        context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
+        return context 
+
+        
+class ContratosView2(SinPrivilegios, generic.ListView):
+    model = Contratos
+    template_name = "cto/contrato_list.html"
+    context_object_name = "obj"
+    success_url= reverse_lazy("cto:contrato_list")
+    permission_required="cto.view_contratos"
+   
+    
+    def get_queryset(self):
+        xtipo=0
+        tipocontrato = Tipocontrato.objects.filter(marcatipoContrato=True)
+        for x in tipocontrato:
+            if x.marcatipoContrato == True:
+               xtipo=x.id
+               #print(xtipo)
+        # r = requests.get('http://127.0.0.1:8000/api/v1/tipocontrato/7')
+        # print (r.content)
+        # print (r.status_code)
+        # print (r.headers)
+        # print (r.json)
+        #x=urllib.request.urlretrieve('http://127.0.0.1:8000/api/v1/tipocontrato/7')
+        #print(x)8
+        
+        current_userx = self.request.user.id
+        #conditions = dict(current_user=current_userx, uc_id=self.request.user) 
+        #queryset = queryset.filter(**conditions)
+        #return Contratos.objects.all()
+       
+        return Contratos.objects.filter(
+            (Q(current_user=current_userx) | Q(uc_id=self.request.user)), Q(tipocontrato_id=xtipo)
+        )
+        #return SpyorEnc.objects.filter(
+        #    Q(current_user=current_userx) | Q(uc_id=self.request.user) | Q(el_jefe=current_userx)
+        #)
+        
+    
+    
+    def get_context_data(self, **kwargs):
+       
+        # Call the base implementation first to get a context
+        context = super(ContratosView, self).get_context_data(**kwargs)
+        # Get the blog from id and add it to the context
+        context['some_data'] = Partes.objects.all()
+        context['some_data2'] = Departamento.objects.all()
+        context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
+        return context                       
+    
+    def get_context_data(self, **kwargs):
+       
+        # Call the base implementation first to get a context
+        context = super(ContratosView, self).get_context_data(**kwargs)
+        # Get the blog from id and add it to the context
+        context['some_data'] = Partes.objects.all()
+        context['some_data2'] = Departamento.objects.all()
+        context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
+        return context 
+
+
+
 
 @login_required(login_url='/login/')
 @permission_required('cto.add_contratos', login_url='bases:sin_privilegios')
@@ -370,7 +441,7 @@ def contratos2(request,contrato_id=None):
                 'estadoContrato':"Yucatán",
                 'paisContrato':"México",  
                 'importeContrato':0.00,
-                'npContrato':"",
+                'npContrato':1,
                 'imppContrato':0.00,
                 'vhppContrato':285.00,
                 'totalhorasContrato':"",
@@ -573,6 +644,7 @@ def contratos2(request,contrato_id=None):
         
         documento = request.POST.get("documento")
         comentarioDocto = request.POST.get("comentarioDocto")
+        type(documento)
         req = Requisitos.objects.get(pk=documento)
         vigenciaFinDocto = request.POST.get("enc_vigenciaFinDocto")
         
@@ -644,10 +716,14 @@ def coverletter_export(request,id):
     regimen = Regimen.objects.get(id=partes.regfiscalParte_id) # Régimen fiscal del contratado
     replegal = Partes.objects.get(id=549) # Datos del contratante
     letras = numero_to_letras(contratos.importeContrato.amount)
-   
-    pagolet = numero_to_letras(contratos.imppContrato.amount)
+    
+    if contratos.imppContrato:
+       pagolet = numero_to_letras(contratos.imppContrato.amount)
+       currency2 = "${:,.2f}".format(contratos.imppContrato.amount)
+    else:
+       pagolet = 0
+       currency2= ""
     currency = "${:,.2f}".format(contratos.importeContrato.amount)
-    currency2 = "${:,.2f}".format(contratos.imppContrato.amount)
     document = Document()
     locale.setlocale(locale.LC_TIME, "es-MX")
     puesto = Puestos.objects.filter(nombrePuesto=partes.clavePuesto).first()
@@ -1001,8 +1077,9 @@ def coverletter_export(request,id):
             textosecue = textosecue.replace("@npContrato" , str(contratos.npContrato) )
             
             textosecue = textosecue.replace("@totalhorasContrato" , str(contratos.totalhorasContrato) )
-            textosecue = textosecue.replace("@imppContrato" , currency2 )
-            textosecue = textosecue.replace("@pagolet" , "(" + pagolet + ")" )
+            if currency2:
+               textosecue = textosecue.replace("@imppContrato" , currency2 )
+               textosecue = textosecue.replace("@pagolet" , "(" + pagolet + ")" )
             if xcurp == "M":
                    textosecue = textosecue.replace("mexicano" , "mexicana" )
                    textosecue = textosecue.replace("un profesionista" , "una profesionista" )
@@ -1522,4 +1599,16 @@ def calcular_edad_anos(fecha_nacimiento):
     fecha_actual = date.today()
     resultado = fecha_actual.year -  fecha_nacimiento.year
     resultado -= ((fecha_actual.month, fecha_actual.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
-    return resultado          
+    return resultado
+
+
+class DoctosDetDelete(SinPrivilegios, generic.DeleteView):
+    permission_required = "cto.delete_doctos"
+    model = Doctos
+    template_name = "cto/doctos_det_del.html"
+    context_object_name = 'obj' 
+    
+    def get_success_url(self):
+      contrato_id=self.kwargs['contrato_id']
+      return reverse_lazy('cto:contrato_edit', kwargs={'contrato_id': contrato_id}) 
+

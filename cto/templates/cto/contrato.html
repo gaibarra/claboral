@@ -23,7 +23,6 @@
         
         {% for x in fun2 %}
             {% if x.user_id == enc.rstep1 %}
-              
               <a class="btn btn-success" href="#"><i cass="far fa-calendar-plus"></i>{{ enc.astep1 }} {{x.usuario}} <br> {{ enc.fstep1 |date:'d-M-y H:i'}}</a>
             {% endif %}                      
         {% endfor %} 
@@ -33,16 +32,19 @@
               <a class="btn btn-secondary" href="#"><i cass="far fa-calendar-plus"></i>{{ enc.astep2 }} {{x.usuario}} <br> {{ enc.fstep2 |date:'d-M-y H:i'}}</a>
            {% endif %}                      
         {% endfor %} 
+
         {% for x in fun2 %}
            {% if x.user_id == enc.rstep3 %}
               <a class="btn btn-warning" href="#"><i cass="far fa-calendar-plus"></i>{{ enc.astep3 }} {{x.usuario}} <br> {{ enc.fstep3 |date:'d-M-y H:i'}}</a>
            {% endif %}                      
         {% endfor %} 
+
         {% for x in fun2 %}
            {% if x.user_id == enc.rstep4 %}
               <a class="btn btn-info" href="#"><i cass="far fa-calendar-plus"></i>{{ enc.astep4 }} {{x.usuario}} <br> {{ enc.fstep4 |date:'d-M-y H:i'}}</a>
            {% endif %}                      
         {% endfor %} 
+        
         {% for x in fun2 %}
            {% if x.user_id == enc.rstep5 %}
               <a class="btn btn-dark" href="#"><i cass="far fa-calendar-plus"></i>{{ enc.astep5 }} {{x.usuario}} <br> {{ enc.fstep5 |date:'d-M-y H:i'}}</a>
@@ -72,11 +74,9 @@
                 <div class="col-lg-6 form-group">
                     <div class="content">
                         <div class="row badge-primary">
-                           
                             <div class="col-lg-12 text-left ">
                                #Contrato  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   Fecha    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;  Status
                             </div>
-                         
                         </div>
                         
                         <div class="row badge-primary">
@@ -102,14 +102,10 @@
                                              
                            
                         <div class="row"  >  
-                           
-                           
-                               
                             {% if enc.parte2 %}
                                 <div class="col-lg-10 form-group" >
                                    {{ enc.parte2 }} 
                                 </div>
-
                             {% else %}
                                 <div class="col-lg-10 form-group">
                                     <select name="enc_nombreParte" id="enc_nombreParte" class="form-control" required>
@@ -118,21 +114,19 @@
                                             <option value="{{item.id}}">{{ item.nombreParte }} </option>
                                         {% endfor %} 
                                      </select>
-                                
-                                
                                 </div>
-                                
-                          
                             {% endif%}
                           
-                             
+                            
                     </div>
-                       
+                    {% comment %} <div id="mensaje1" class="errores">Seleccione el sujeto del contrato</div> {% endcomment %}
+                   
+                    
                     <div class="row" p-2>    
                       
                         <div class="col-lg-7  text-left">
                                Fecha de inicio del contrato:
-                               
+                                
                         </div>
                       {% if enc.datecontrato_ini %}
                         <div class="col-lg-5 form-group" >
@@ -144,7 +138,8 @@
                         </div>
                       {% endif %}
                     </div>
-                    {% if tipocont.id != 7 and tipocont.id != 10 and tipocont.id != 4 and tipocont.id != 5 %}
+          
+          {% if tipocont.id != 7 and tipocont.id != 10 and tipocont.id != 4 and tipocont.id != 5 %}
                     <div class="row" p-2>    
                       
                         <div class="col-lg-7  text-left">
@@ -161,7 +156,9 @@
                         </div>
                       {% endif %}
                     </div>   
-                    {% endif %}    
+          {% endif %}
+
+
                      <div class="row" p-2>
 
                         <div class="col-lg-6  text-left">
@@ -176,14 +173,14 @@
                         </div>
                       {% endif %}
                     </div> 
-                    
+           {% if tipocont.id == 2 or tipocont.id == 3 or tipocont.id == 1 or tipocont.id == 11 %}         
                     <div class="row" p-2>
 
                         <div class="col-lg-6  text-left">
                                Número de pagos:
                                
                         </div>
-                       {% if enc.npContrato %}
+                       {% if enc.npContrato > 1 %}
                           {{ enc.npContrato }}
                        {% else %}
                         <div class="col-lg-4">
@@ -206,7 +203,9 @@
                         </div>
                       {%endif%}
                     </div>  
-
+            {% endif %}
+                    
+                    
                     <div class="row" p-2>
 
                         <div class="col-lg-6  text-left">
@@ -248,7 +247,7 @@
                             {% endif %}
                     </div>
                     
-
+                    
                         <hr>
                       
                         
@@ -583,8 +582,8 @@
                         <div class="row">
                             <div class="col-lg-12">
                             
-                                  <input type="file" name="pdf">
-                                  <button type="submit">Subir</button>
+                                  <input type="file" name="pdf" required>
+                                  <button type="submit" id="bEnviar">Enviar datos</button>
                                   {% if url %}
                                     <p>Uploaded file: <a href="{{ url }}">{{ url }}</a></p>
                                   {% endif %}
@@ -626,15 +625,9 @@
                             <th data-field="pdf">Imagen</th>
                             <th data-sortable="true" data-field="documento">Documento</th>      
                             <th data-sortable="true" data-field="vigenciaFinDocto">Caducidad-</th>
-                            
-                            
                             <th data-sortable="true" data-field="comentarioDocto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">Comentarios</>
-                              
-                            
-                           
-                      
-                             <th class="all" >Editar</th>
-                                
+                            <th class="all" >Editar</th>
+                            <th class="all" >Eliminar</th>    
                            
                              
                            
@@ -658,10 +651,14 @@
                                
                                
                                 <td>
-                                    <button class="btn btn-warning btn-circle" onclick="return abrir_modal('{% url 'cto:contrato_edit' item.id%}')"><i class="far fa-edit"></i></button>
+                                    <button class="btn btn-warning btn-circle" onclick="return abrir_modal('{% url 'cto:doctos_edit' item.id%}')"><i class="far fa-edit"></i></button>
                                 </td>
                                
-                                
+                                <td>
+                                    <button class="btn btn-danger btn-circle" onclick="return abrir_modal('{% url 'cto:doctos_del' item.id item.id %}')">
+                                       <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
                                  
                                  
                                 
@@ -682,6 +679,67 @@
 {% endblock %}
 {% block js_page %}
 
+<script>
+    $(document).ready(function(){
+        $("#bEnviar").click(function(){
+           var nombre = $("#enc_nombreParte").val();
+           var docu = $("#documento").val();
+           var impo = $("#enc_importeContrato").val();
+           var fec = $("#enc_datecontrato_ini").val();
+           var nh = $("#enc_totalhorasContrato").val();
+           var xpdf = $("#pdf").val();
+           
+           
+           
+           if(nombre == 0 ){
+              Swal.fire({
+	              title: "Seleccione el sujeto del contrato",
+	              icon: "warning",
+                width: "30%"
+              });
+              return false;
+           }
+
+           if(fec == "" ){
+              Swal.fire({
+	              title: "Seleccione la fecha de inicio del contrato",
+	              icon: "warning",
+                width: "30%"
+              });
+              return false;
+           }
+           
+           if(impo == 0 ){
+              Swal.fire({
+	              title: "Porporcione el importe del contrato",
+	              icon: "warning",
+                width: "30%"
+              });
+              return false;
+           }
+
+           if(nh == "" ){
+              Swal.fire({
+	              title: "Porporcione el número de horas",
+	              icon: "warning",
+                width: "30%"
+              });
+              return false;
+           }
+
+           if(docu == 0 ){
+              Swal.fire({
+	              title: "Seleccione un documento",
+	              icon: "warning",
+                width: "30%"
+              });
+              return false;
+           }
+
+                      
+        });
+    });
+</script>
 
 
 
@@ -689,6 +747,9 @@
      
     
     $(function () {
+        
+            
+        
         $("#enc_datecontrato_ini").datetimepicker({
             format: 'Y-m-d',
             timepicker:false
@@ -710,14 +771,19 @@
             selectOnBlur: true,
             placeholder: "Seleccione el Sujeto del contrato",
             allowClear: true,
+            required: true,
            
         });
         
         $('#documento').select2({
             placeholder: "Seleccione el documento",
-            allowClear: true
+            allowClear: true,
+            required: true,
         });
         
+        
+
+
         $("#sidebarToggle").click();
         $('#enc_testigoContrato1').select2({
             tags: true,
@@ -733,7 +799,7 @@
             allowClear: true
         });    
 
-       
+        
 
        
 
@@ -747,7 +813,9 @@
         
         $("#enc_testigoContrato2").val("{{ enc.testigoContrato2 }}").change();
         
-        $("#comentarioDocto").val("{{ det.comentarioDocto }}").change();
+       $("#enc_importeContrato").val("{{ enc.importeContrato }}").change();
+       
+       $("#comentarioDocto").val("{{ det.comentarioDocto }}").change();
 
 
         $("#status").val("{{ enc.status }}");
@@ -763,9 +831,14 @@
 function avanza(id)
   {
     
-    alert("Enviado ok !!");
+    Swal.fire({
+	              title: "Enviado !",
+	              icon: "success",
+                width: "30%"
+              });
     var data = {id:id};
     data = JSON.stringify(data);
+    
     var token = '{{csrf_token}}';
     // alert(token);
     // alert(id);
@@ -794,7 +867,11 @@ function avanza(id)
 function devuelve(id)
   {
     
-    alert("Devuelto ok !!");
+    Swal.fire({
+	              title: "Contrato devuelto !",
+	              icon: "success",
+                width: "30%"
+              });
     var data = {id:id};
     data = JSON.stringify(data);
     var token = '{{csrf_token}}';
