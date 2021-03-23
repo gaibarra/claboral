@@ -2,7 +2,7 @@
     <b-container>
         <b-row>
             <b-col>
-                <h1>Bienvenido Gonzalo a tu primera aplicación Veu </h1>
+                <h1>Bienvenido Gonzalo a tu primera aplicación Vue </h1>
                 <img src="../assets/Logo.jpg" alt="" width ="30%" height="auto" rounded="circle">
             </b-col>
         </b-row>

@@ -127,6 +127,8 @@
                     <a class="dropdown-item" id="2" href="{% url 'cto:contrato_list' %}">HONORARIOS por SERVICIOS DENTALES</a>
                     <a class="dropdown-item" id="3" href="{% url 'cto:contrato_list' %}">HONORARIOS por SERVICIOS DOCENTES</a>
                 </div>
+            
+            
             </div>
             {% endif %}
           
@@ -138,12 +140,14 @@
   				<button class="btn btn-secondary dropdown-toggle badge-info"
           			type="button" id="dropdownMenu1" data-toggle="dropdown"
          			 aria-haspopup="true" aria-expanded="false">
-    					Externos
+    					Otros Contratos
   				</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu1" >
                     
                     <a class="dropdown-item" id="1" href="{% url 'cto:contrato_list' %}">CONTRATO DE HONORARIOS ASIMILADOS A SALARIOS</a>
                     <a class="dropdown-item" id="11" href="{% url 'cto:contrato_list' %}">CONTRATO DE PRESTACIÓN DE SERVICIOS PROFESIONALES EDUCATIVOS</a>
+                    <a class="dropdown-item" id="13" href="{% url 'cto:contrato_list' %}">CONTRATO DE COMODATO DE VEHÍCULO</a>
+                              
                 </div>
             </div>
             {% endif %}
