@@ -50,7 +50,7 @@ from requests.api import get
 from bases.views import SinPrivilegios
 from bases.views import *
 from .models import Departamento, Partes, Contratos, Doctos, Tipocontrato, Requisitos, Valida, Secuencia, Regimen, Ciclos, Puestos
-from .forms import DepartamentoForm, PartesForm, ContratosForm
+from .forms import DepartamentoForm, PartesForm, ContratosForm, PuestosForm
 from bases.views import SinPrivilegios
 from django.core.files.storage import FileSystemStorage, get_storage_class
 from api.serializer import TipocontratoSerializer
@@ -113,6 +113,8 @@ def departamentoInactivar(request,id):
     
     return HttpResponse("FAIL") 
 
+
+
 class PartesView(SinPrivilegios,generic.ListView):
         model = Partes
         template_name = "cto/partes_list.html"
@@ -168,6 +170,9 @@ class PartesEdit(VistaBaseEdit):
     form_class = PartesForm
     success_url= reverse_lazy("cto:partes_list")
     permission_required="cto.change_partes"
+
+
+ 
 
 
 @login_required(login_url="/login/")
@@ -810,19 +815,28 @@ def coverletter_export(request,id):
     else:
        xnombreParte = "**********" + " " + partes.nombreParte 
        #messages.info(request, message="Registrar: Título del Sujeto del Contrato")
-   
-   
-    xcurp = partes.curp[10:11]
+
+    if partes.curp:
+       xcurp = partes.curp[10:11]
+    else:
+       xcurp ="X"   
+
+    
     if xcurp == "H":
         xelolaParte = "EL"
         xenCalidadDe2 = tipoc.enCalidadDe2
         yenCalidadDe2 = tipoc.enCalidadDe2
+        
+    
     else:    
         xelolaParte = "LA"
         xenCalidadDe2 = tipoc.enCalidadDe2f
         yenCalidadDe2 = tipoc.enCalidadDe2f
    
+    
+    
     xenCalidadDe2 = textox.replace("@enCalidadDe2" , xenCalidadDe2 )
+    
     textox = xenCalidadDe2
     xenCalidadDe1 = textox.replace("@enCalidadDe1" , tipoc.enCalidadDe1 )
     textox = xenCalidadDe1
@@ -848,7 +862,7 @@ def coverletter_export(request,id):
        p003.add_run("CLÁUSULAS", style = 'CommentsStyle').bold = True
        p003.alignment = WD_ALIGN_PARAGRAPH.CENTER 
     
-    if tipoc.id == 7 or tipoc.id == 8 or tipoc.id == 4 or tipoc.id == 5:
+    if tipoc.id == 7 or tipoc.id == 8 or tipoc.id == 4 or tipoc.id == 5 or tipoc.id == 11:
        p003 = document.add_paragraph()
        p003.add_run("DECLARACIONES", style = 'CommentsStyle').bold = True
        p003.alignment = WD_ALIGN_PARAGRAPH.CENTER 
@@ -896,11 +910,14 @@ def coverletter_export(request,id):
     if tipoc.id == 3:
            nums = ( 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126 )
     
+    if tipoc.id == 11:
+           nums = ( 604, 605, 606, 607, 608, 609, 610, 611, 612, 613, 614, 615, 616, 617, 618, 619, 620, 621, 622, 623,624, 625, 626, 627, 628, 629,  630, 631, 632, 633, 634, 635, 636, 637, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648)
+
     
     
     
     for n in nums:  
-        #print(n)
+        print(n)
         secue = Secuencia.objects.get(id=n)   
         if secue.nivel2 == 0:
             
@@ -913,47 +930,54 @@ def coverletter_export(request,id):
                
                textosecue = textosecue.replace("@enCalidadDe1" , tipoc.enCalidadDe1 )
                
-               xcurp = partes.curp[10:11]
-               if xcurp == "H":
-                     xelolaParte = "EL"
-                     xenCalidadDe2 = tipoc.enCalidadDe2
-               else:    
-                     xelolaParte = "LA"
-                     xenCalidadDe2 = tipoc.enCalidadDe2f
                
-               textosecue = textosecue.replace("@enCalidadDe2" , xenCalidadDe2 )
-               
-               
-               
-               if partes.fecha_ingreso:
-                  #print(secue.id)
-                  textosecue = textosecue.replace("@fechaingreso", partes.fecha_ingreso.strftime("%d de %B de %Y"))
-               else:
-                  textosecue = textosecue.replace("@fechaingreso", "**********" ) 
+               if partes.personaParte == 1:
+                  xcurp = partes.curp[10:11]
+                  if xcurp == "H":
+                        xelolaParte = "EL"
+                        xenCalidadDe2 = tipoc.enCalidadDe2
+                  else:    
+                        xelolaParte = "LA"
+                        xenCalidadDe2 = tipoc.enCalidadDe2f
+                        textosecue = textosecue.replace("@enCalidadDe2" , xenCalidadDe2 )
 
-               if puesto.actividadesPuesto:
-                      #print(secue.id)
-                  textosecue = textosecue.replace("@actividadesPuesto", puesto.actividadesPuesto )
                else:
-                  textosecue = textosecue.replace("@actividadesPuesto", "**********" )   
-               
-               if partes.actividadesParte:
-                      #print(secue.id)
-                  textosecue = textosecue.replace("@actividadesContrato", partes.actividadesParte )
-               else:
-                  textosecue = textosecue.replace("@actividadesContrato", "" )
+                  xelolaParte = ""
+                  xenCalidadDe2 = tipoc.enCalidadDe2
+                  textosecue = textosecue.replace("@enCalidadDe2" , xenCalidadDe2 )
+  
 
-               if partes.titulo_profParte:
-                   textosecue = textosecue.replace("@titulo_profParte" , partes.titulo_profParte )
-               else:
-                   textosecue = textosecue.replace("@titulo_profParte" , "**********" )
-               
-               
-               if partes.clavePuesto:
-                      #print(secue.id)
-                  textosecue = textosecue.replace("@clavePuesto", puesto.nombrePuesto) 
-               else:
-                  textosecue = textosecue.replace("@clavePuesto", "**********" ) 
+
+               if partes.personaParte == 1:
+                  if partes.fecha_ingreso:
+                     #print(secue.id)
+                     textosecue = textosecue.replace("@fechaingreso", partes.fecha_ingreso.strftime("%d de %B de %Y"))
+                  else:
+                     textosecue = textosecue.replace("@fechaingreso", "**********" ) 
+   
+                  if puesto.funcionesPuesto:
+                         #print(secue.id)
+                     textosecue = textosecue.replace("@actividadesPuesto", puesto.actividadesPuesto )
+                  else:
+                     textosecue = textosecue.replace("@actividadesPuesto", "**********" )   
+                  
+                  if partes.actividadesParte:
+                         #print(secue.id)
+                     textosecue = textosecue.replace("@actividadesContrato", partes.actividadesParte )
+                  else:
+                     textosecue = textosecue.replace("@actividadesContrato", "" )
+   
+                  if partes.titulo_profParte:
+                      textosecue = textosecue.replace("@titulo_profParte" , partes.titulo_profParte )
+                  else:
+                      textosecue = textosecue.replace("@titulo_profParte" , "**********" )
+                  
+                  
+                  if partes.clavePuesto:
+                         #print(secue.id)
+                     textosecue = textosecue.replace("@clavePuesto", puesto.nombrePuesto) 
+                  else:
+                     textosecue = textosecue.replace("@clavePuesto", "**********" ) 
                
                textosecue = textosecue.replace("@totalhorasContrato" , str(contratos.totalhorasContrato) )
                textosecue = textosecue.replace("@importeContrato" , currency )
@@ -984,7 +1008,9 @@ def coverletter_export(request,id):
             secue = Secuencia.objects.get(id=n)
             p006= document.add_paragraph()
             textosecue = secue.identificador + ".- " + secue.textoSecuencia
-            textosecue = textosecue.replace("@curp" , partes.curp )
+            
+            if partes.curp:
+               textosecue = textosecue.replace("@curp" , partes.curp )
             
             if partes.titulo_profParte:
                textosecue = textosecue.replace("@titulo_profParte" , partes.titulo_profParte )
@@ -993,7 +1019,7 @@ def coverletter_export(request,id):
 
             textosecue = textosecue.replace("@enCalidadDe1" , tipoc.enCalidadDe1 )           
             textosecue = textosecue.replace("@enCalidadDe2" , xenCalidadDe2 )
-
+            
             if partes.universidadParte:
                textosecue = textosecue.replace("@universidadParte" , partes.universidadParte )
             else:
@@ -1034,30 +1060,32 @@ def coverletter_export(request,id):
             dia = partes.rfc[8:10]
             xano = int(ano)	+ 1900
             
-            fecha_nacimiento = date(xano, int(mes), int(dia))
-            edad = calcular_edad_anos(fecha_nacimiento)
-            #print(f'la edad es {edad} años')
+            
+            if partes.personaParte == 1:
+               fecha_nacimiento = date(xano, int(mes), int(dia))
+               edad = calcular_edad_anos(fecha_nacimiento)
+               #print(f'la edad es {edad} años')
 
-            if edad:
-               textosecue = textosecue.replace("@edadParte" , " "+str(edad) )
-            else:
-               textosecue = textosecue.replace("@edadParte" , "**********" )
-            
-            sexo = partes.curp[10:11]
-            
-            if sexo == "H":
-               textosecue = textosecue.replace("@sexoParte" , "MASCULINO" ) 
-            else:
-               if sexo == "M": 
-                   textosecue = textosecue.replace("@sexoParte" , "FEMENINO" )
+               if edad:
+                  textosecue = textosecue.replace("@edadParte" , " "+str(edad) )
                else:
-                   textosecue = textosecue.replace("@sexoParte" , "**********" )
+                  textosecue = textosecue.replace("@edadParte" , "**********" )
+               
+               sexo = partes.curp[10:11]
+               
+               if sexo == "H":
+                  textosecue = textosecue.replace("@sexoParte" , "MASCULINO" ) 
+               else:
+                  if sexo == "M": 
+                      textosecue = textosecue.replace("@sexoParte" , "FEMENINO" )
+                  else:
+                      textosecue = textosecue.replace("@sexoParte" , "**********" )
             
-            if partes.estadocivilParte:
-               textosecue = textosecue.replace("@estadocivilParte" , partes.estadocivilParte )
-            else:
-               textosecue = textosecue.replace("@estadocivilParte" , "**********" )
-            
+               if partes.estadocivilParte:
+                  textosecue = textosecue.replace("@estadocivilParte" , partes.estadocivilParte )
+               else:
+                  textosecue = textosecue.replace("@estadocivilParte" , "**********" )
+               
             textosecue = textosecue.replace("@datecontrato_ini" , contratos.datecontrato_ini.strftime("%d de %B de %Y"))
             if contratos.datecontrato_fin:
                textosecue = textosecue.replace("@datecontrato_fin" , contratos.datecontrato_fin.strftime("%d de %B de %Y"))
@@ -1090,7 +1118,9 @@ def coverletter_export(request,id):
             paragraph_format.space_after = Pt(3)
             paragraph_format.left_indent = Inches(0.4)
             paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            xcurp = partes.curp[10:11]
+            
+            if partes.personaParte == 1:  
+               xcurp = partes.curp[10:11]
             
            
     
@@ -1612,3 +1642,23 @@ class DoctosDetDelete(SinPrivilegios, generic.DeleteView):
       contrato_id=self.kwargs['contrato_id']
       return reverse_lazy('cto:contrato_edit', kwargs={'contrato_id': contrato_id}) 
 
+class PuestosView(SinPrivilegios,generic.ListView):
+    model = Puestos
+    template_name = "cto/puestos_list.html"
+    context_object_name = "obj"
+    success_url= reverse_lazy("cto:puestos_list")
+    permission_required = "cto.view_puestos"
+
+class PuestosNew(VistaBaseCreate):
+    model= Puestos
+    template_name="cto/puestos_form.html"
+    form_class=PuestosForm
+    success_url= reverse_lazy("cto:puestos_list")
+    permission_required="cto.add_puestos" 
+
+class PuestosEdit(VistaBaseEdit):
+    model = Puestos
+    template_name="cto/puestos_form.html"
+    form_class = PuestosForm
+    success_url= reverse_lazy("cto:puestos_list")
+    permission_required="cto.change_puestos"           
