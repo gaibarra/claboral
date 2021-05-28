@@ -55,7 +55,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'bases:home' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+          <span>Eventos laborales</span></a>
       </li>
 
       <!-- Divider -->
@@ -65,20 +65,77 @@
       <div class="sidebar-heading">
         Opciones de Menú
       </div>
+       {% comment %} Nav Item - Utilities Collapse Menu  {% endcomment %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+          <i class="fas fa-fw fa-eye"></i>
+          <span>Prospección</span>
+        </a>
+        
+        
+         
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header"></h6>
 
+         {% if perms.cto.view_puestos %}
+            {% comment %} <a class="collapse-item" href="{% url 'cto:contrato_list' %}">Servicios Dentales</a> {% endcomment %}
+            <div class="dropdown">
+             <button class="btn btn-secondary dropdown-toggle badge-info " 
+                     type="button" id="dropdownMenu1" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">
+               Perfil de puestos
+             </button>
+             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+               <a class="dropdown-item" id="20" href="{% url 'cto:puestos_list' %}">Establecer las características, funciones, herramientas, habilidades, experiencia y conocimientos que requerirá la persona que se seleccione</a> 
+              
+             </div>
+           </div>
+            
+          {% endif %}
+      
+         <h6 class="collapse-header"></h6>
+
+         {% if perms.cto.view_contratos %}
+            {% comment %} <a class="collapse-item" href="{% url 'cto:contrato_list' %}">Servicios Dentales</a> {% endcomment %}
+            <div class="dropdown">
+             <button class="btn btn-secondary dropdown-toggle badge-info " 
+                     type="button" id="dropdownMenu1" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">
+               Proceso de selección
+             </button>
+             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+               <a class="dropdown-item" id="20" href="{% url 'cto:partes_list' %}">Registro  de candidatos</a> 
+               <a class="dropdown-item" id="21" href="{% url 'cto:partes_list' %}">Proceso de entrevistas</a> 
+               <a class="dropdown-item" id="22" href="{% url 'cto:partes_list' %}">Prueba de conocimientos</a> 
+               <a class="dropdown-item" id="23" href="{% url 'cto:partes_list' %}">Medición psicológica</a>
+               <a class="dropdown-item" id="24" href="{% url 'cto:partes_list' %}">Verificación cuidadosa de referencias</a>
+               <a class="dropdown-item" id="25" href="{% url 'cto:partes_list' %}">Asistencia de expertos y superiores</a> 
+               <a class="dropdown-item" id="26" href="{% url 'cto:partes_list' %}">Nombramiento</a>
+             </div>
+            
+            
+           </div>
+            
+            {% endif %}
+      </li>  
       <!-- Nav Item - Pages Collapse Menu -->
+                       
+      
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Contratos</span>
+          <i class="fas fa-fw fa-calendar-check"></i>
+          <span>Contratación</span>
         </a>
+        
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
+            
             {% if perms.cto.view_contratos %}
             {% comment %} <a class="collapse-item" href="{% url 'cto:contrato_list' %}">Servicios Dentales</a> {% endcomment %}
             <div class="dropdown">
-             <button class="btn btn-secondary dropdown-toggle badge-info "
+             <button class="btn btn-secondary dropdown-toggle badge-info " 
                      type="button" id="dropdownMenu1" data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
                Sueldos Docentes
@@ -158,39 +215,71 @@
           </div>
         </div>
       </li>
+      
+      
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompras" aria-expanded="true" aria-controls="collapseCompras">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Catálogos</span>
+          <span>Normatividad STPS</span>
         </a>
+           
+        
+        
+        
         <div id="collapseCompras" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Departamentos</h6>
-            <a class="collapse-item" href="{% url 'cto:departamento_list' %}">Departamentos</a>
-
-            <h6 class="collapse-header">Sujetos</h6>
-            <a class="collapse-item" href="{% url 'cto:partes_list' %}">Sujetos de Contrato</a>
-
+            <h6 class="collapse-header"></h6>
+            
+            {% if perms.cto.view_contratos %}
+             <div class="dropdown">
+             
+             <button class="btn btn-secondary dropdown-toggle badge-info " 
+                     type="button" id="dropdownMenu1" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">
+               Capacitación
+             </button>
+             
+             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">COMISIÓN MIXTA DE PRODUCTIVIDAD, CAPACITACIÓN Y ADIESTRAMIENTO </a> 
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">Acuerdo de la STPS  para la CAPACITACIÓN, ADIESTRAMIENTO Y PRODUCTIVIDAD DE LOS TRABAJADORES</a>
+              
+             </div>
+           </div>
+            
+            {% endif %}
+            <h6 class="collapse-header"></h6>
+            {% if perms.cto.view_contratos %}
+             <div class="dropdown">
+             <button class="btn btn-secondary dropdown-toggle badge-info " 
+                     type="button" id="dropdownMenu1" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">
+               Seguridad e Higiene
+             </button>
+             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">COMISIÓN MIXTA DE SEGURIDAD E HIGIENE</a> 
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-001-STPS-2008 EDIFICIOS, LOCALES, INSTALACIONES Y ÁREAS en los centros de trabajo condiciones de seguridad</a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-002-STPS-2010 Prevención y protección contra INCENDIOS en los centros de trabajo condiciones de seguridad</a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-018-STPS-2015 Sistema armonizado para la identificación y comunicación de peligros y riesgos y por SUSTANCIAS QUÍMICAS perligrosas en los centros de trabajo</a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-019-STPS-2011 Constitución, integración, organización y funcionamiento de las COMISIONES DE SEGURIDAD E HIGIENE </a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-012-STPS-2012 Condiciones de seguridad y salud en los centros de trabajo donde se manejen FUENTES DE RADIACION IONIZANTE </a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-030-STPS-2009 Servicios preventivos de seguridad y salud en el trabajo FUNCIONES Y ACTIVIDADES </a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-025-STPS-2008 Condiciones de ILUMINACIÖN en los centros de trabajo </a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-026-STPS-2008 COLORES Y SEÑALES de seguridad e higiene, e identificación de riesgos por FLUIDOS CONDUCIDOS EN TUBERIAS </a>
+               <a class="dropdown-item" id="20" href="{% url 'cto:contrato_list' %}">NOM-035-STPS-2018 FACTORES DE RIESGO PSICOSOCIAL en el trabajo. Identificación, análisas y prevención </a>
+             
+             </div>
+           </div>
+            
+            {% endif %}
+             
+            
+            
           </div>
         </div>
       </li>
-
-      <!-- Nav Item - Utilities Collapse Menu 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li> -->
+      
+      
+      
 
       <!-- Nav Item - Pages Collapse Menu 
       <li class="nav-item active">

@@ -8,9 +8,31 @@ const credenciales = {"username":USUARIO,"password":PASSWORD}
 const getToken = async () => {
     const r = await fetch(
         TOKEN_URL, {
-        method="POST",
-        body=JSON.stringify(credenciales),
-
+            method="POST",
+            body=JSON.stringify(credenciales),
+            mode:"cors",
+            headers:{
+                'Content-Type':'application/json'
+            }        
         }
     )
+    const token = await r.json();
+    return token;
+}
+
+export default {
+    getall: async () => {
+        const token = await getToken();
+        const res = await fetch(DOCS_URL,{
+            method = "GET",
+            headers: {
+                'Content-Type':'application/json',
+                'Autorization':"Bearer "+token.access
+            }
+        }   
+        );
+        const items = await res.json();
+        console.log(items);
+        return items.results;
+    }
 }

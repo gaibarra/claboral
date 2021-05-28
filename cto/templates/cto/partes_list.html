@@ -40,8 +40,9 @@
           <th data-sortable="true" data-field="claveDepartamento_id">Depto</th>
           <th data-sortable="true" data-field="nombreParte">Nombre completo</th>
           <th data-sortable="true" data-field="rfc">R.F.C.</th>
-          <th data-sortable="true" data-field=>Estado</th>
-          <th class="all">Acciones</th>  
+          <th data-sortable="true" data-field=>Estatus</th>
+          
+          <th class="all">Editar</th>  
       </thead>
       <tbody>
         {% for item in obj%}
@@ -50,7 +51,8 @@
           <td>{{ item.claveDepartamento_id }}</td>
           <td>{{ item.nombreParte }}</td>
           <td>{{ item.rfc }}</td>
-          <td >{#item.estado|yesno:"Activo,Inactivo"#}
+          <td>{{ item.estatusParte }}</td>
+          {% comment %} <td >{#item.estado|yesno:"Activo,Inactivo"#}
             <div onclick="inactivar({{item.id}})">
               {% if item.estado %}
                 <i class="far fa-thumbs-up text-primary"></i>
@@ -58,7 +60,7 @@
                 <i class="far fa-thumbs-down text-danger"></i>
               {% endif %}
             </div>
-          </td>
+          </td> {% endcomment %}
           <td>
             <button class="btn btn-warning btn-circle" onclick="return abrir_modal('{% url 'cto:partes_edit' item.id %}')"><i class="far fa-edit"></i></button>
           </td>

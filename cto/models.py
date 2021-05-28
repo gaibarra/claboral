@@ -129,9 +129,15 @@ class Departamento(ClaseModelo2):
         verbose_name="Departamento"
 
 class Puestos(ClaseModelo2):
-    nombrePuesto = models.CharField('Nombre Puesto', max_length=100, blank=False, null=False)
+    nombrePuesto = models.CharField('Nombre del puesto', max_length=100, blank=False, null=False)
     claveCampus = models.CharField('Clave del Campus', max_length=3, blank=False, null=False)
-    actividadesPuesto = RichTextField('Actividades del puesto', blank=True, null=True)
+    caracteristicasPuesto = RichTextField('Características', blank=True, null=True)
+    funcionesPuesto = RichTextField('Funciones', blank=True, null=True)
+    herramientasPuesto = RichTextField('Herramientas', blank=True, null=True)
+    habilidadesPuesto = RichTextField('Habilidades', blank=True, null=True)
+    experienciaPuesto = RichTextField('Experiencia', blank=True, null=True)
+    conocimientosPuesto = RichTextField('Conocimientos', blank=True, null=True)
+
     
     def __str__(self):
         return '{}'.format(self.nombrePuesto)
@@ -164,9 +170,33 @@ class Regimen(ClaseModelo2):
         verbose_name="Régimen Fiscal"         
 
 class Partes(ClaseModelo2):
+    class Estatus(models.IntegerChoices):
+        PRO = 1, "PROSPECTO"
+        CON = 2, "EN PROCESO DE CONTRATACION"
+        CTO = 3, "CONTRATADO"
+        VOL = 4, "EN PROCESO BAJA VOLUNTARIA"
+        NEC = 5, "EN PROCESO BAJA NECESARIA"
+        BJA = 6, "DADO DE BAJA"
+
+    estatusParte = models.PositiveSmallIntegerField(
+        choices=Estatus.choices,
+        default=Estatus.CON,
+        verbose_name="Estatus"
+    )
+    
+    class Tipopersona(models.IntegerChoices):
+        PFI = 1, "PERSONA FÍSICA"
+        PMO = 2, "PERSONA MORAL"
+      
+
+    personaParte = models.PositiveSmallIntegerField(
+        choices=Tipopersona.choices,
+        default=Tipopersona.PFI,
+        verbose_name="Tipo de persona"
+    )
     claveDepartamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, to_field='claveDepartamento', default="")
     codigo = models.CharField('Código', max_length=13, blank=True, null=True)
-    clavePuesto = models.ForeignKey(Puestos, on_delete=models.CASCADE, blank=True, null=True, default="" )
+    clavePuesto = models.ForeignKey(Puestos, on_delete=models.CASCADE, blank=True, null=True, default="", verbose_name='Puesto' )
     fecha_ingreso = models.DateField('Fecha de ingreso', blank=True, null=True)
     email = models.EmailField('Correo electrónico', blank=True, null=True)
     tituloParte = models.CharField('Título abreviado ', max_length=100, blank=True, null=True)
@@ -174,6 +204,7 @@ class Partes(ClaseModelo2):
     nombresParte = models.CharField('Nombres del contratante', max_length=100, blank=True, null=True)
     apellidoPaternoParte = models.CharField('Apellido 1', max_length=100, blank=True, null=True)
     apellidoMaternoParte = models.CharField('Apellido 2', max_length=100, blank=True, null=True)
+    tituloParte = models.CharField('Título abreviado ', max_length=100, blank=True, null=True)
     lugarnacimientoParte = models.CharField('Lugar de nacimiento ', max_length=100, blank=True, null=True)
     rfc = models.CharField('RFC', max_length=14, blank=True, null=True)
     imss = models.CharField('IMSS', max_length=11, blank=True, null=True)
@@ -184,10 +215,11 @@ class Partes(ClaseModelo2):
     regfiscalParte =  models.ForeignKey(Regimen, on_delete=models.CASCADE, null=False)
     idrep_legalParte = models.IntegerField('id Representante legal', blank=True, null=True)
     datos_actaconstParte = RichTextField('Datos acta constitutiva', blank=True, null=True)
+    datos_representacion = RichTextField('Datos representacion legal', blank=True, null=True)
     titulo_profParte = models.CharField('Título profesional', max_length=100, blank=True, null=True)
     universidadParte =  models.CharField('Universidad', max_length=100, blank=True, null=True)
     cedula_profParte = models.CharField('Cédula profesional', max_length=100, blank=True, null=True)
-    domicilioParte = RichTextField('Domicilio', blank=True, null=True)
+    domicilioParte = RichTextField(blank=True, null=True, verbose_name='Domicilio')
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank = True, null = True)
     usuario = models.CharField('Usuario', max_length=50, blank=True, null=True)
     phone = models.CharField('Teléfono', max_length=15, blank=True, null=True)
@@ -197,7 +229,7 @@ class Partes(ClaseModelo2):
     salarioDiario = models.FloatField('Salario Diario', blank=True, null=True)
     nacionalidadParte =  models.CharField('Nacionalidad', max_length=30, blank=True, null=True)
     estadocivilParte =  models.CharField('Estado Civil', max_length=30, blank=True, null=True)
-    actividadesParte = RichTextField('Actividades del puesto', blank=True, null=True)
+    actividadesParte = RichTextField('Actividades', blank=True, null=True)
     
 
     def __str__(self):
@@ -336,7 +368,7 @@ class Secuencia(ClaseModelo2):
     nivel2 = models.IntegerField('Nivel 2', blank=True, null=True)
     nivel3 = models.IntegerField('Nivel 3', blank=True, null=True)
     nivel4 = models.IntegerField('Nivel 4', blank=True, null=True)
-    identificador = models.CharField('Identificador', max_length=10, blank=True, null=True)
+    identificador = models.CharField('Identificador', max_length=20, blank=True, null=True)
     textoSecuencia = RichTextField('Texto secuencia', blank=True, null=True)
 
     def __str__(self):
@@ -437,5 +469,4 @@ class Doctos(ClaseModelo2):
     class Meta:
         verbose_name_plural = "Documentos"
         verbose_name="Documento"
-    
     
