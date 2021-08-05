@@ -627,7 +627,7 @@ def contratos2(request,contrato_id=None):
                 astep1 = f1,
                 astep2 = f2,
                 astep3 = f3,
-                astep4 = f4,
+                astep4 = f4, 
                 astep5 = f5,
                 astep6 = f6,
                 devuelto_por = False,
@@ -810,12 +810,19 @@ def coverletter_export(request,id):
     
     
     textox = tipoc.textoinicialContrato
+    
+   
+    
     if partes.tituloParte:
        xnombreParte = partes.tituloParte + " " + partes.nombreParte
     else:
-       xnombreParte = "**********" + " " + partes.nombreParte 
+       if partes.personaParte == 1:
+          xnombreParte = "**********" + " " + partes.nombreParte
+       else:
+          xnombreParte = partes.nombreParte    
        #messages.info(request, message="Registrar: Título del Sujeto del Contrato")
-
+    
+    
     if partes.curp:
        xcurp = partes.curp[10:11]
     else:
@@ -862,7 +869,7 @@ def coverletter_export(request,id):
        p003.add_run("CLÁUSULAS", style = 'CommentsStyle').bold = True
        p003.alignment = WD_ALIGN_PARAGRAPH.CENTER 
     
-    if tipoc.id == 7 or tipoc.id == 8 or tipoc.id == 4 or tipoc.id == 5 or tipoc.id == 11:
+    if tipoc.id == 7 or tipoc.id == 8 or tipoc.id == 4 or tipoc.id == 5 or tipoc.id == 11 or tipoc.id == 13:
        p003 = document.add_paragraph()
        p003.add_run("DECLARACIONES", style = 'CommentsStyle').bold = True
        p003.alignment = WD_ALIGN_PARAGRAPH.CENTER 
@@ -913,7 +920,8 @@ def coverletter_export(request,id):
     if tipoc.id == 11:
            nums = ( 604, 605, 606, 607, 608, 609, 610, 611, 612, 613, 614, 615, 616, 617, 618, 619, 620, 621, 622, 623,624, 625, 626, 627, 628, 629,  630, 631, 632, 633, 634, 635, 636, 637, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648)
 
-    
+    if tipoc.id == 13:
+           nums = ( 649, 650 )
     
     
     for n in nums:  
@@ -1008,6 +1016,9 @@ def coverletter_export(request,id):
             secue = Secuencia.objects.get(id=n)
             p006= document.add_paragraph()
             textosecue = secue.identificador + ".- " + secue.textoSecuencia
+            
+            if partes.datos_actaconstParte:
+                   textosecue = textosecue.replace("@datos_actaconstParte" , partes.datos_actaconstParte )
             
             if partes.curp:
                textosecue = textosecue.replace("@curp" , partes.curp )
@@ -1161,7 +1172,10 @@ def coverletter_export(request,id):
     if partes.tituloParte:
        dt2=dtab_cells[1].paragraphs[0].add_run(partes.tituloParte + " " + partes.nombreParte).font.size = Pt(11)
     else:
-       dt2=dtab_cells[1].paragraphs[0].add_run("**********" + " " + partes.nombreParte).font.size = Pt(11)       
+       if partes.personaParte == 1:
+          dt2=dtab_cells[1].paragraphs[0].add_run("**********" + " " + partes.nombreParte).font.size = Pt(11)
+       else:
+          dt2=dtab_cells[1].paragraphs[0].add_run(partes.nombreParte).font.size = Pt(11)          
     
     dt2=dtab_cells[1].paragraphs[0].paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
@@ -1214,7 +1228,10 @@ def coverletter_export(request,id):
     if partes.tituloParte:
        xt1=xtab_cells[1].paragraphs[0].add_run(partes.tituloParte + " " + partes.nombreParte).font.size = Pt(8)
     else:
-       xt1=xtab_cells[1].paragraphs[0].add_run("**********" + " " + partes.nombreParte).font.size = Pt(8)
+       if partes.personaParte == 1:
+          xt1=xtab_cells[1].paragraphs[0].add_run("**********" + " " + partes.nombreParte).font.size = Pt(8)
+       else:
+          xt1=xtab_cells[1].paragraphs[0].add_run(partes.nombreParte).font.size = Pt(8) 
     
     
     

@@ -201,7 +201,7 @@ class Partes(ClaseModelo2):
     email = models.EmailField('Correo electrónico', blank=True, null=True)
     tituloParte = models.CharField('Título abreviado ', max_length=100, blank=True, null=True)
     nombreParte = models.CharField('Nombre o razón social ', max_length=200, blank=False, null=False)
-    nombresParte = models.CharField('Nombres del contratante', max_length=100, blank=True, null=True)
+    nombresParte = models.CharField('Nombres', max_length=100, blank=True, null=True)
     apellidoPaternoParte = models.CharField('Apellido 1', max_length=100, blank=True, null=True)
     apellidoMaternoParte = models.CharField('Apellido 2', max_length=100, blank=True, null=True)
     tituloParte = models.CharField('Título abreviado ', max_length=100, blank=True, null=True)
@@ -237,6 +237,10 @@ class Partes(ClaseModelo2):
 
     def save(self):
         super(Partes,self).save()
+
+    def save(self, *args, **kwargs):
+        self.nombreParte = self.nombresParte + " " + self.apellidoPaternoParte + " " + self.apellidoMaternoParte
+        super(Partes, self).save(*args, **kwargs)  
 
     class Meta:
         verbose_name_plural = "Partes del contrato"
