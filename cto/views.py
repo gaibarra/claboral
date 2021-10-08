@@ -237,15 +237,7 @@ class ContratosView(SinPrivilegios, generic.ListView):
         context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
         return context                       
     
-    def get_context_data(self, **kwargs):
-       
-        # Call the base implementation first to get a context
-        context = super(ContratosView, self).get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
-        context['some_data'] = Partes.objects.all()
-        context['some_data2'] = Departamento.objects.all()
-        context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
-        return context 
+    
 
         
 class ContratosView2(SinPrivilegios, generic.ListView):
@@ -295,15 +287,7 @@ class ContratosView2(SinPrivilegios, generic.ListView):
         context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
         return context                       
     
-    def get_context_data(self, **kwargs):
-       
-        # Call the base implementation first to get a context
-        context = super(ContratosView, self).get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
-        context['some_data'] = Partes.objects.all()
-        context['some_data2'] = Departamento.objects.all()
-        context['some_data3'] = Tipocontrato.objects.filter(marcatipoContrato=True)
-        return context 
+    
 
 
 

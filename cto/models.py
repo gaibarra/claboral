@@ -351,8 +351,11 @@ class Contratos(ClaseModelo2):
     cstep6 = RichTextField('Comentarios 6', blank=True, null=True, default="")
     devuelto_por = models.IntegerField('Devuelto por', blank=True, null=True)
     actividadesContrato = RichTextField('Actividades', blank=True, null=True)
-    
-
+    ivaContrato = models.FloatField('IVA del contrato', blank=True, null=True, default = .16)
+    importeContratoconiva = models.FloatField('Importe con IVA', blank=True, null=True)
+    retivaContrato = models.FloatField('Retención de IVA', blank=True, null=True, default = .1)
+    retisrContrato = models.FloatField('Retención de ISR', blank=True, null=True)
+    netoContrato = models.FloatField('Importe Neto', blank=True, null=True)
     
     def __str__(self):
         return '{}'.format(self.id)

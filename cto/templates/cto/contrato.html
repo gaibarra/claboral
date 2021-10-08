@@ -582,8 +582,11 @@
                         <div class="row">
                             <div class="col-lg-12">
                             
-                                  <input type="file" name="pdf" required>
-                                  <button type="submit" id="bEnviar">Enviar datos</button>
+                                  <input type="file" id="archivoInput" name="pdf" required onchange="validarExt()">
+                                  <div id="visorArchivo">
+
+                                  </div>
+                                  <button type="submit" id="bEnviar">Guardar</button>
                                   {% if url %}
                                     <p>Uploaded file: <a href="{{ url }}">{{ url }}</a></p>
                                   {% endif %}
@@ -679,6 +682,8 @@
 {% endblock %}
 {% block js_page %}
 
+
+
 <script>
     $(document).ready(function(){
         $("#bEnviar").click(function(){
@@ -738,9 +743,11 @@
 
                       
         });
-    });
+        
+       
+    
+      });
 </script>
-
 
 
 <script>
@@ -989,4 +996,47 @@ function gracont(id)
   }  
 
 </script>
+<script type="text/javascript">
+ 
+ function validarExt()
+  {
+    var archivoInput = document.getElementById('archivoInput');
+    var archivoRuta = archivoInput.value;
+    var extPermitidas = /(.pdf|.PDF|.png|.PNG|.jpg|.JPG)$/i;
+
+    if(!extPermitidas.exec(archivoRuta))
+    {
+       Swal.fire({
+	              title: "Los archivos permitidos son: PDF, JPG y PNG",
+	              icon: "warning",
+                width: "30%"
+              });406
+       archivoInput.value = '';
+       return false
+    }
+    {% comment %} else
+    {
+      if(archivoInput.files && archivoInput.files[0])
+      {
+        var visor = new FileReader();
+        visor.onload = function(e)
+        {
+             document.getElementById('visorArchivo').innerHTML =
+             '<embed src=""'+e.target.result+'" width="500" height="500" >'
+
+
+        };
+        visor.readAsDataURL(archivoInput.files[0]);
+
+
+      }
+    }     {% endcomment %}
+  }
+</script>
+
+
+
+
+
+
 {% endblock %}
