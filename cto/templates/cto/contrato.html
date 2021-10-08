@@ -4,10 +4,11 @@
 
 
  {% block top_bar %}
-         <p class="m-0 font-weight-bold text-secundary"> {{ tipocont.tipoContrato }} </p>
-         <p class="m-0 font-weight-bold text-secundary">  user-> {{ user.username }} &nbsp;&nbsp; {{ user.last_name }} {{ user.first_name }} {{ secuencia_data }}</p>
+         <h5 class="m-20 font-weight-bolder text-success badge-light"> {{ tipocont.tipoContrato }}  </h5>
+         <!-- <p class="m-0 font-weight-bold text-secundary"> {{ tipocont.tipoContrato }} </p> -->
+         <p class="m-0 font-weight-bold text-primary">  user-> {{ user.username }} &nbsp;&nbsp; {{ user.last_name }} {{ user.first_name }} {{ secuencia_data }}</p>
       {% for depa in departamentos %}   
-         <p class="m-0 font-weight-bold text-">   {{ depa.claveDepartamento }} &nbsp;&nbsp; {{ depa.nombreDepartamento }}  </p> 
+         <p class="m-0 font-weight-bold text-primary"> Depto: &nbsp;&nbsp;  {{ depa.claveDepartamento }} &nbsp;&nbsp; {{ depa.nombreDepartamento }}  </p> 
       {% endfor  %}
   {% endblock top_bar %}
 
@@ -103,9 +104,9 @@
                            
                         <div class="row"  >  
                             {% if enc.parte2 %}
-                                <div class="col-lg-10 form-group" >
+                                <div  class="col-lg-10 form-group" ><mark>
                                    {{ enc.parte2 }} 
-                                </div>
+                                  </mark></div>
                             {% else %}
                                 <div class="col-lg-10 form-group">
                                     <select name="enc_nombreParte" id="enc_nombreParte" class="form-control" required>
@@ -169,7 +170,7 @@
                         {{ enc.importeContrato}}
                       {% else %}
                         <div class="col-lg-5">
-                            <input type="float"  class="form-control text-right" name="enc_importeContrato" id="enc_importeContrato" value="{{ enc.importeContrato }}" required>
+                            <input type="float"  class="form-control text-right" name="enc_importeContrato" id="enc_importeContrato" value="{{ enc.importeContrato }}" onchange="calcImporte()" required>
                         </div>
                       {% endif %}
                     </div> 
@@ -996,6 +997,8 @@ function gracont(id)
   }  
 
 </script>
+
+
 <script type="text/javascript">
  
  function validarExt()
@@ -1036,7 +1039,15 @@ function gracont(id)
 
 
 
-
+<script type="text/javascript">
+ 
+function calcImporte()
+ {
+    alert('cambió del importe');
+    alert(enc_importeContrato.value);
+    alert(enc_npContrato.value);
+  }
+</script>
 
 
 {% endblock %}

@@ -146,7 +146,9 @@ class PuestosForm(forms.ModelForm):
             })
 
         self.fields['nombrePuesto'].widget.attrs['style'] = "width:700px"
+        self.fields['nombrePuesto'].widget.attrs['readonly'] = True
         self.fields['claveCampus'].widget.attrs['style'] = "width:700px"
+        self.fields['claveCampus'].widget.attrs['readonly'] = True
         self.fields['caracteristicasPuesto'].widget.attrs['style'] = "width:700px"
         self.fields['conocimientosPuesto'].widget.attrs['style'] = "width:700px"
         self.fields['experienciaPuesto'].widget.attrs['style'] = "width:700px"

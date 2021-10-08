@@ -5,7 +5,7 @@
 {% block top_bar %}
       {% for x in some_data3 %} 
          {% if x.marcatipoContrato  %} 
-            <h6 class="m-0 font-weight-bold text-primary">{{ x.tipoContrato }}   </h6>
+            <h5 class="m-20 font-weight-bolder text-success badge-light">{{ x.tipoContrato }}   </h5>
          {% endif %}
       {% endfor %}        
       <p class="m-0 font-weight-bold text-primary">  user: {{ user.username }} &nbsp;&nbsp; {{ user.last_name }} {{ user.first_name }} </p>
@@ -58,7 +58,7 @@
     <div class="alert alert-info">No Hay Contratos</div>
     {% endif %}
     <div class="buttons-toolbar">
-        <a class="btn btn-primary" href="{% url 'cto:contrato_new' %}"><i cass="far fa-calendar-plus"></i>Nuevo Contrato</a>
+        <a class="btn btn-danger" href="{% url 'cto:contrato_new' %}"><i cass="far fa-calendar-plus"></i>Nuevo Contrato</a>
         
     </div>
 

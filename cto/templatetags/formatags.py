@@ -42,7 +42,7 @@ def view_1(request):
         'ip_address': request.META['REMOTE_ADDR'],
         'message': 'I am view 1.'
     })
-    print (c)
+    #print (c)
     return t.render(c)
 
 
