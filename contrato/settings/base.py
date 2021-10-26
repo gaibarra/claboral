@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_userforeignkey',
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt',
   
 ]
 
