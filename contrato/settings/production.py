@@ -29,7 +29,7 @@ from decouple import config
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('postgresql-crystalline-88810')
+        default=config('HEROKU_POSTGRESQL_BROWN_URL')
     )
 
 }
